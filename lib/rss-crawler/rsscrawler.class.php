@@ -2,15 +2,12 @@
 
 class RSSCrawler
 {
-    private $reader;
-    private $rss_xml;
+    private $reader = NULL;
+    private $rss_xml = NULL;
     private $url = NULL;
     private $isrss = FALSE;
-    private $isinit = FALSE;
-    private $isitem = FALSE;
 
-    private $item;
-    private $item_num;
+    private $item_num = 0;
     private $item_cursor = 0;
     
     private function fetch_to_assoc($rss)
@@ -47,47 +44,30 @@ class RSSCrawler
         }
         return $result;
     }
-    
-    private function store_xml()
-    {
-        $this->rss_xml = $this->fetch_to_assoc($this->reader);
-    }
 
     private function init()
     {
-        $this->store_xml();
+        $this->rss_xml = $this->fetch_to_assoc($this->reader);
 
-        if (isset($this->rss_xml['rss']))
+        if (isset($this->rss_xml['rss']) && isset($this->rss_xml['rss']['channel']))
             $this->isrss = TRUE;
 
         if (isset($this->rss_xml['rss']['channel']['item']))
         {
-            $this->isitem = TRUE;
-            $this->item = $this->rss_xml['rss']['channel']['item'];
-            $this->item_num = count($this->item);
+            $this->item_num = count($this->rss_xml['rss']['channel']['item']);
             $this->item_cursor = 0;
         }
-        $this->isinit = TRUE;
-    }
-
-    private function format_url($url)
-    {
-        $pattern = '^http://';
-        if (!eregi($pattern, $url))
-            $url = 'http://'.$url;
-        return $url;
     }
 
     public function open($url)
     {
-        if ($this->isinit)
-            return FALSE;
+        if ($this->url)
+            $this->close();
 
-        $this->reader = new XMLReader();
-        $this->url = $this->format_url($url);
-        if ($this->reader->open($this->url))
+        $this->reader = $this->reader == NULL ? new XMLReader() : $this->reader;
+        if ($this->reader->open($url))
         {
-            $this->init();
+            $this->url = $url;
             return TRUE;
         }
         return FALSE;
@@ -95,37 +75,48 @@ class RSSCrawler
 
     public function read_item()
     {
-        if (!$this->isitem)
+        if (!$this->item_num || $this->item_cursor >= $this->item_num)
             return NULL;
 
-        if ($this->item_cursor >= $this->item_num)
-            return NULL;
-
-        return $this->item['item-'.$this->item_cursor++];
+        return $this->rss_xml['rss']['channel']['item']['item-'.$this->item_cursor++];
     }
 
     public function valid()
     {
-        if (!$this->isinit)
-            return FALSE;
-
+        if ($this->isrss)
+            return TRUE;
+            
+        $xml = new XMLReader();
+        $xml->open($this->url);
+        $xml->setParserProperty(XMLReader::VALIDATE, TRUE);
+        if ($xml->isValid())
+        {
+            $this->init();
+        }
+        $xml->close();
         return $this->isrss;
-
     }
 
     public function close()
     {
-        if ($this->isinit)
+        if ($this->url)
+        {
             if($this->reader->close())
+            {
+                $this->url = NULL;
+                $this->rss_xml = NULL;
+                $this->isrss = FALSE;
+                $this->item_num = 0;
+                $this->item_cursor = 0;
                 return TRUE;
+            }
+        }
         return FALSE;
     }
 
     public function get_item_num()
     {
-        if ($this->isitem)
-            return $this->item_num;
-        return 0;
+        return $this->item_num;
     }
 
     public function get_rss_attributes()
@@ -135,14 +126,30 @@ class RSSCrawler
         return NULL;
     }
 
-/*
-    public function test()
+    public function get_channel()
     {
-        if (!isset($this->rss_xml))
-            $this->store_xml();
-        return $this->rss_xml;
+        $channel = array();
+        if ($this->isrss)
+        {
+            $channel = $this->rss_xml['rss']['channel'];
+            unset($channel['item']);
+        }
+        return $channel;
     }
-*/
+    
+    public function reset_read_cursor()
+    {
+        $this->item_cursor = 0;
+    }
+    
+    public function set_read_cursor($num)
+    {
+        if (!is_int($num) || $num > $this->item_num || $num <= 0)
+            return FALSE;
+        $this->item_cursor = $num - 1;
+        return TRUE;
+    }
+
 }
 
 ?>

@@ -2,8 +2,12 @@
 	margin: 0;
 	padding: 0;
 }
+body{
+	font-size:12px;
+}
 img{
         float:left;	
+	border:none;
 }
 p{
 	margin: 7px;
@@ -65,14 +69,47 @@ img.step{
 
 }
 img.command{
-        float:right;
-	margin-top: 60px;
-        margin-right: 40px;
-
+    float:right;
+	margin-top: 20px;
+    margin-right: 40px;
 }
 img.command_1{
 	float:right;
 	margin-top: -30px;
+   	margin-right: 40px;
+}
+img.command_regist{
+	float:right;
+	margin-top: 40px;
+    	margin-right: 40px;
+}
+input.command{
+	float:right;
+	width:112px;
+	height:34px;
+	margin-top: -35px;
+    	margin-right: 40px;
+
+}
+input.command_1{
+	float:right;
+	width:112px;
+	height:34px;
+	margin-top: -90px;
+    	margin-right: 40px;
+}
+input.command_2{
+	float:right;
+	width:84px;
+	height:27px;
+	margin-top: 20px;
+    	margin-right: 55px;
+}
+input.command_s{
+	float:right;
+	width:112px;
+	height:34px;
+	margin-top: -35px;
         margin-right: 40px;
 }
 img.title{
@@ -85,6 +122,9 @@ input{
 	height: 30px;
 	width: 230px;
 	margin-left: 50px;
+	vertical-align:middle;
+	font-size:18px;
+	line-height:30px;
 }
 input.email{
 	margin-top: 60px;
@@ -100,4 +140,32 @@ input.realname{
 }
 input.address{
 	margin-top: 60px;
+}
+.useraction ul, .useraction li
+{
+    list-style-type: none;
+    display:inline;
+	margin-left:5px;
+}
+.useraction a
+{
+    text-decoration: none;
+}
+.useraction a:link, .useraction a:visited
+{
+    color:#fff;
+}
+.useraction a:hover
+{
+    color:#00FFFF;
+}
+div.useraction
+{
+    float: right;
+    margin: 5px 10px 0px 0px;
+}
+#warn{
+	float: left;
+	margin-top: 20px;
+	margin-left: 80px;
 }

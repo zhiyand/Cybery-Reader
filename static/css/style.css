@@ -2,13 +2,20 @@
 	margin: 0;
 	padding: 0;
 }
+body{
+	font-size:12px;
+}
 img{
-        float:left;	
+	border:none;
+}
+a img{
+	border:none;
 }
 a{
 	color: black;
+	text-decoration: none;
 }
-a:link{
+a:link, a:visited{
 	text-decoration: none;
 }
 a.rightext{
@@ -16,12 +23,14 @@ a.rightext{
 }
 a:hover{
 	color: #00FFFF;
+	text-decoration: none;
 }
 p{
 	margin: 5px;
 }
 p.remind{
-	margin-top: 7px;
+	margin-top: -15px;
+	margin-left: 40px;
 }
 h3{
 	margin: 5px;
@@ -142,15 +151,56 @@ img.star{
 	text-align:center;
 	color: white;
 }
+#comment{
+	float: left;
+	margin-left: 10px;
+}
+#addComment{
+	float: right;
+	margin-top: 10px;
+	margin-right: 60px;
+}
 .flip
 {
-	border-color:gray;
-	border-style:solid;
-	border-width:thin;
-	border-left-style:none;
+	margin:0;
+	border-top:1px solid #ccc;
+	padding:5px 8px;
+	clear:both;
 }
-#panel
+.panel
 {
-	margin-left: 10px;
+	padding:10px 15px;
+	border-top:1px solid #ccc;
+}
+.panel p{
+	padding:8px 0;
+}
+.panel p img{
+	background:#eee;
+	padding:3px;
+	margin:0 15px 15px 0;
+}
+.useraction ul, .useraction li
+{
+    list-style-type: none;
+    display:inline;
+	margin-left:5px;
+}
+.useraction a
+{
+    text-decoration: none;
+}
+.useraction a:link, .useraction a:visited
+{
+    color:#fff;
+}
+.useraction a:hover
+{
+    color:#00FFFF;
+}
+div.useraction
+{
+    float: right;
+    margin: 5px 10px 0px 0px;
 }
 
