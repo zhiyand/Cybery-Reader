@@ -9,20 +9,34 @@
 		<link rel="stylesheet" href="./css/style.css" type="text/css" />
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$("h3.flip").click(function(){
-					$("#panel").slideToggle("slow");
+				$("h3.flip").toggle(function(){
+					$(".panel").slideDown("slow");
+					$(this).removeClass("flip")
+					},function(){
+					$(".panel").slideUp("slow");
 				});
-				$("h2.flip").click(function(){
-					$("#panall").slideToggle("slow");
+				$("h2.flip").toggle(function(){
+					$(".panall").slideDown("slow");
+					$(this).removeClass("flip")
+					},function(){
+					$(".panall").slideUp("slow");
 				});
-				$("img.myfeed").click(function(){
-                                        $("img.myfeed").attr("src","images/butplus.gif");
+				$("img.myfeed").toggle(function(){
+					$(this).attr("src","images/butplus.gif");
 					$("ul.myfeed").slideToggle("slow");
-				});
-				$("img.hotfeed").click(function(){
-                                        $("img.hotfeed").attr("src","images/butplus.gif");
+					},function(){
+					$(this).attr("src","images/butsub.gif");
+					$("ul.myfeed").slideToggle("slow");
+					}
+					);
+				$("img.hotfeed").toggle(function(){
+					$(this).attr("src","images/butplus.gif");
 					$("ul.hotfeed").slideToggle("slow");
-				});
+					},function(){
+					$(this).attr("src","images/butsub.gif");
+					$("ul.hotfeed").slideToggle("slow");
+					}
+					);
 				$("p.remind").click(function(){
 					$("#message").hide();
 					$("#messagetext").show();
@@ -31,8 +45,20 @@
 					$("#message").hide();
 					$("#messagetext").hide();
 				});
-				$("img.star").click(function(){
-					 $("img.star").attr("src","images/starblank.png");
+				$("img.star").toggle(function(){
+					 $(this).attr("src","images/starblank.png");
+					 },
+					 function(){
+					 $(this).attr("src","images/starfull.png");
+				});
+				$("#newfeed").click(function(){
+					$(".feedform").show();
+				});
+				$("input.exit").click(function(){
+					$(".feedform").hide();
+				});
+				$("input.command_s").click(function(){
+					$(".feedform").hide();
 				});
 			});
 		</script>
@@ -40,9 +66,23 @@
 
 	<body>
 
+	<div class="feedform">
+		<form class="feedform">
+			<input class="address" type="text" name="address" value="请输入您的地址"  onMouseOver="this.focus()" onMouseOut="if(this.value=='')this.value='请输入您的地址';" onFocus="this.select()" onClick="if(this.value=='请输入您的地址')this.value=''">
+			<input type="image" value="" class="exit" src="images/exit.gif" />
+			<input type="image" value="" class="command_s" src="images/subscribe.png" />
+		</form>
+	</div>
+
 	<div id="header">
-			<img src="images/logo.png" class="logo" />
-			<img src="images/see.png" class="logonote"/>
+		<div class="useraction">
+		<ul>
+			<li><a hreF="#header" id="newfeed">添加订阅</a></li>
+			<li><a href="" >退出</a></li>
+		</ul>
+		</div>
+		<img src="images/logo.png" class="logo" />
+		<img src="images/see.png" class="logonote"/>
 	</div>
 
 	<div id="message">
@@ -101,15 +141,15 @@
 			<li class="rightext">
 				<div class="comment">
 					<em><a href="" class="rightext">咸鱼:</a></em> : <p>ABC</p>
-				</div>
-			</li>
+			</div>
+
 		</ul>
 
 
 		<p>你的评论：</p>
 		<table action="../comment/" method="POST">
 			<textarea name="comment" id="comment" cols="30" rows="4"></textarea>
-			<input type="submit" name="submit" id="addComment"/>
+			<input type="submit" value="提交" id="addComment"/>
 		</table>
 
 		<div class="comments">
@@ -126,26 +166,26 @@
 
 		<div class="loading_posts">正在加载文章，请稍候....</div>
 
-		<div id="panall">
-			<div id="num1">
+		<div class="panall">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>漫画：如何写出好代码?</h3>
 			</div>
-			<div id="num2">
+			<div id="num">
 				<img src="images/starfull.png" class="star" /><h3>去创业还是去环游世界?</h3>
 			</div>
-			<div id="num3">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>你的架构很烂，但我并不在意</h3>
 			</div>
-			<div id="num4">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>史蒂夫·乔布斯很懂团队建设</h3>
 			</div>
-			<div id="num5">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>我听到过的最精彩的一个软件纠错故事</h3>
 			</div>
-			<div id="num6">
+			<div id="num">
 				<img src="images/starfull.png" class="star" /><h3 class="flip">就像你刚学会编程那样写程序</h3>
 				<div class="loading_posts">正在加载文章，请稍候....</div>
-				<div id="panel">
+				<div class="panel">
 					<p>就像你刚学会编程那样写程序</p>
 					<p>作者：某某</P>
 					<img src="images/howtowritecode.jpg" class="im" />
@@ -160,31 +200,32 @@
 					<p>这是一个很容易被人忘记或忽略的教训。在开发时，既要关注你做的东西给最终用户的体验，同时又要注意用来表现这些用户体验的程序的架构，这是极其困难的事。也许根本不可能。</p>
 					<p>我想这唯一的解决办法就是放弃后者。用直接但看起来滑稽的代码，就像是刚学会编程那样，跳出樊笼，摘掉扣在代码上的各种软件工程技术的大帽子 — 除非你想成为真正的软件工程师，而非事关用户体验的设计师。</p>
 				</div>
-			<div id="num7">
+			</div>
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>漫画：你能帮我把这个文件重命名吗?</h3>
 			</div>
-			<div id="num8">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>成功不寻常</h3>
 			</div>
-			<div id="num9">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>交易</h3>
 			</div>
-			<div id="num10">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>"测试是浪费时间，我的程序肯定没问题"</h3>
 			</div>
-			<div id="num11">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>愚蠢且能干</h3>
 			</div>
-			<div id="num12">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>让能者不多得</h3>
 			</div>
-			<div id="num13">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>改良程序的11技巧</h3>
 			</div>
-			<div id="num14">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>你不是真的想要100万</h3>
 			</div>
-			<div id="num15">
+			<div id="num">
 				<img src="images/starblank.png" class="star" /><h3>一个关于两个国家互派间谍的问题</p>
 			</div>
        		 </div>
@@ -193,7 +234,11 @@
 	</div>
 	
 	<div id="footer">
-		@ 2011 CopyRight 
+		<p>
+		<a href="http://www.pureweber.com/cybery-reader/" >Cybery Reader</a>
+		is proudly powered by
+		<a href="http://www.pureweber.com">纯粹互联网(PureWeber)</a>
+		</p<
 	</div>
 
 	</body>
