@@ -223,7 +223,7 @@ class FeedManager
     //title字段为RSS标题，url字段为RSS的链接。
     function find_feed($url)
     {
-        $content = file_get_contents($url);
+        $content = @file_get_contents($url);
         if (!$content)
             return NULL;
         $pattern = '<link.+((type.+application/rss\+xml.+)|(title.+"(.*)".+)|(href.+"(.*)".+)){3}/>';

@@ -14,7 +14,7 @@ class RSSCrawler
     {
         $result = array();
         $counter = 0;
-        while ($rss->read())
+        while (@$rss->read())
         {
             switch ($rss->nodeType)
             {
@@ -65,7 +65,7 @@ class RSSCrawler
             $this->close();
 
         $this->reader = $this->reader == NULL ? new XMLReader() : $this->reader;
-        if ($this->reader->open($url))
+        if (@$this->reader->open($url))
         {
             $this->url = $url;
             return TRUE;
@@ -87,7 +87,7 @@ class RSSCrawler
             return TRUE;
             
         $xml = new XMLReader();
-        $xml->open($this->url);
+        @$xml->open($this->url);
         $xml->setParserProperty(XMLReader::VALIDATE, TRUE);
         if ($xml->isValid())
         {
